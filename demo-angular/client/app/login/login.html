@@ -1,0 +1,41 @@
+<div class="page-signin" ng-controller="LoginCtrl as login">
+    <div class="wrapper">
+        <toaster-container></toaster-container>
+        <div class="main-body">
+            <div class="body-inner">
+                <div class="card bg-white">
+                    <div class="card-content">
+                        <section class="logo text-center">
+                            <img src="images/logo-grey.png" alt="LOGO" height="120" width="150" />
+                        </section>
+                        <form name="login_form" class="form-horizontal" novalidate>
+                            <fieldset>
+                                <md-input-container class="md-block">
+                                    <label>Username</label>
+                                    <input required type="text" name="email" ng-model="login.username" ng-click="clearMsg()" />
+                                    <div ng-messages="login_form.email.$error" multiple ng-if='login_form.email.$dirty'>
+                                        <div ng-message="required">Username is required</div>
+                                    </div>
+                                </md-input-container>
+                                <div class="divider divider-md"></div>
+                                <md-input-container class="md-block">
+                                    <label>Password</label>
+                                    <input required type="password" name="password" ng-model="login.password" ng-click="clearMsg()">
+                                    <div ng-messages="login_form.password.$error" multiple ng-if='login_form.password.$dirty'>
+                                        <div ng-message="required">This is required.</div>
+                                    </div>
+                                </md-input-container>
+                                <div class="alert alert-info" data-ng-show="showError">Invalid Username Or Password</div>
+                                <md-button type="submit" style="float:right" class="md-raised btn-w-md md-primary" data-ng-disabled="!login_form.$valid" ng-click="login.submitForm()">Login</md-button>
+                                <div class="divider"></div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="additional-info">
+                    <a href="#/forgot-password">Forgot your password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

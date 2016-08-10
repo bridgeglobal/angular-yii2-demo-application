@@ -1,0 +1,156 @@
+<div class="modal-header">
+        <h3>Area Selection</h3>
+    </div>
+    <div class="modal-body areaModal">
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="col-md-3 areaBorder">
+                    <div class="row areaHeader">
+                        <div class="col-md-8">
+                            FILTER DEMOGRAPHICS</div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <md-checkbox  ng-model="search.demographic_area_1_yn" class="md-primary" aria-label="Pimary" ng-true-value="'1'" ng-false-value="'0'" ng-change="filter()"> 1 </md-checkbox>
+                            <md-checkbox ng-model="search.demographic_area_2_yn" class="md-primary" aria-label="Pimary" ng-true-value="'1'" ng-false-value="'0'" ng-change ="filter()"> 2 </md-checkbox>
+                            <md-checkbox ng-model="search.demographic_area_3_yn" class="md-primary" aria-label="Pimary" ng-true-value="'1'" ng-false-value="'0'" ng-change="filter()"> 3 </md-checkbox>
+                            <md-checkbox ng-model="search.demographic_area_4_yn" class="md-primary" aria-label="Pimary" ng-true-value="'1'" ng-false-value="'0'" ng-change="filter()"> 4 </md-checkbox>
+                            <md-checkbox ng-model="search.demographic_area_commercial_yn" class="md-primary" aria-label="Pimary" ng-true-value="'1'" ng-false-value="'0'" ng-change="filter()"> C </md-checkbox>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <md-radio-group class="ui-md-radio-group-inline" ng-model="search.type" ng-click="filter()">
+                                <md-radio-button value="mixed">Mixed</md-radio-button>
+                                <md-radio-button value="pure">Pure</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-12 areaHeader">
+                            FILTER COMPOSITES
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row" data-ng-repeat="row in composites">
+                        <div class="col-md-4">
+                        <md-checkbox class="md-primary" checklist-model="search.composites" checklist-value="row.composite_name" checklist-change="filter()"> {{row.composite_name}} </md-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6 areaBorder">
+                            <div class="row">
+                                <div class="col-md-12 areaHeader">
+                                    AVAILABLE AREAS</div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel-body ui-map " ng-scrollable style="width: 100%; height: 380px;">
+                                        <table class="table table-bordered table-striped table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div class="th">Area Number</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="th">Area Name</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="th">Composite Name</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="th">Total House Holds</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="th">Action</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-ng-repeat="data in areas">
+                                                    <td>{{data.id}}</td>
+                                                    <td>{{data.area_name}}</td>
+                                                    <td>{{data.composite_name}}</td>
+                                                    <td>{{data.total_households}}</td>
+                                                    <td>
+                                                        <button ng-click="moveRight(data)" class="md-fab md-fab-xs md-button md-ink-ripple" tooltip-placement="bottom" uib-tooltip="Add to selected areas" tooltip-append-to-body="true">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="areas.length == 0">
+                                                    <td colspan="5" class="noRecord" >No Selected Areas</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 areaBorder" style="border-right:1px solid #ddd">
+                            <div class="row">
+                                <div class="col-md-12 areaHeader">
+                                    SELECTED AREAS</div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel-body ui-map " ng-scrollable style="width: 100%; height: 380px;">
+                                        <table class="table table-bordered table-striped table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div class="th">Area Number</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="th">Area Name</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="th">Composite Name</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="th">Total House Holds</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="th">Action</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-ng-repeat="data in areaTemp">
+                                                    <td>{{data.id}}</td>
+                                                    <td>{{data.area_name}}</td>
+                                                    <td>{{data.composite_name}}</td>
+                                                    <td>{{data.total_households}}</td>
+                                                    <td>
+                                                        <button ng-show="permissions.indexOf('delete_customer')!=-1" class="md-fab md-warn md-fab-xs md-button md-ink-ripple" ng-click="moveLeft(data)" aria-hidden="false" tooltip-placement="bottom" uib-tooltip="Remove from selected areas" tooltip-append-to-body="true">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="areaTemp.length == 0 || (angular.isUndefined(areaTemp))">
+                                                    <td colspan="5" class="noRecord" >No Selected Areas</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ui-wave class="btn btn-flat btn-default" ng-click="cancel()">CANCEL</button>
+        <button ui-wave class="btn btn-primary btn-w-md pull-left" ng-click="ok()" data-ng-disabled="areaTemp.length == 0">SAVE</button>
+    </div>

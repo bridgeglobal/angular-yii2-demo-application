@@ -1,0 +1,248 @@
+<div class="content-show">
+    <div class="left-content-show">
+        <div class="inner-fit" data-slim-scroll>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="ih-item ih-material">
+                        <a href="javascript:;">
+                            <div class="img">
+                                <img alt="" src="images/no-image.jpg" ng-if="!postPeople.link">
+                                <img alt="" ng-src="{{server_url}}/d2dserver/images/users/{{postPeople.link}}" ng-if="postPeople.link && postPeople.image_type == 'img'">
+                                <img alt="" ng-src="{{postPeople.link}}" ng-if="postPeople.link && postPeople.image_type == 'url'">
+                            </div>
+                            <div class="info" ng-click="uploadPostPeopleImage(postPeople.link,postPeople.image_type,postPeople.user_id)">
+                                <div class="info-mask bg-dark"></div>
+                                <div class="info-content">
+                                    <div class="info-inner" style="color:white">
+                                        <h2><i class="zmdi zmdi-camera"></i></h2> Change
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xs-12">
+                    <div class="col-md-12 col-xs-12 clear-padding">
+                        <h3 class="text-capitalize">{{postPeople.title}} {{postPeople.first_name}} {{postPeople.last_name}}</h3>
+                        <a class="edit-show" href="#/post-people/edit/{{postPeople.id}}" ng-if="permissions.indexOf('edit_post_people')!=-1"><i class="zmdi zmdi-edit"></i></a>
+                        <div ng-init="x1 = 4">
+                            <uib-rating class="ui-rating size-h4 ui-rating-warning" ng-model="postPeople.rating" max="5" read-only="true" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="divider divider-lg"></div>
+            <h5>CONTACT DETAILS</h5>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p ng-if="telephones.length > 0"><strong>Telephone : </strong> <span ng-repeat="(key,telephone) in telephones">{{telephone.value}}<span ng-if="postPeople.telephones.length != key+1">, </span></span>
+                    </p>
+                    <p ng-if="emails.length > 0"><strong>Email : </strong> <span ng-repeat="(key,email) in emails"><a href="mailto:{{email.value}}">{{email.value}}</a><span ng-if="emails.length != key+1">, </span></span>
+                    </p>
+                    <p ng-if="web.length > 0 "><strong>Website : </strong> <span ng-repeat="(key,website) in web">{{website.value}} <span ng-if="web.length != key+1">, </span> </span>
+                    </p>
+                </div>
+            </div>
+            <div class="divider divider-lg"></div>
+            <div ng-if="addresses.length > 0 " ng-repeat="(key,address) in addresses">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="text-capitalize" ng-if="address.street"><strong>{{address.street}}</strong><br></span>
+                        <span class="text-capitalize" ng-if="address.town">{{address.town}}<br></span>
+                        <span class="text-capitalize" ng-if="address.city">{{address.city}}<br></span>
+                        <span class="text-capitalize" ng-if="address.country">{{address.country}}<br></span>
+                        <span ng-if="address.postcode">{{address.postcode}}<br></span>
+                    </div>
+                    <div class="col-md-12 inlineCss">
+                        <a href="{{postPeople.googlemap}}" target="_blank"><span class="zmdi zmdi-pin"></span></a>&nbsp;&nbsp;
+                        <span class="zmdi zmdi-map"></span>
+                    </div>
+                </div>
+                <div class="divider"></div>
+            </div>
+            <div class="divider divider-lg"></div>
+            <h5>QUICK OVERVIEW</h5>
+            <hr>
+            <div class="row">
+                <div class="col-md-12" ng-if="background_info != 0">
+                    
+                </div>
+                <div class="col-md-12 text-center ash" ng-if="!background_info">
+                    <h4><i class="fa fa-user"></i></h4>
+                    <p>No information recorded</p>
+                    <!-- <p ng-if="permissions.indexOf('add_background_info')!=-1"> <a href="#" ><i class="fa fa-plus"></i> Add background Info</a></p> -->
+                </div>
+            </div>
+            <div class="divider divider-lg"></div>
+            <div ng-if="social.length > 0">
+                <h5>SOCIAL PROFILES</h5>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="inlineCss social-ico">
+                            <a ng-repeat="soc in social" href="{{soc.value}}" class="btn-icon btn-icon-round btn-{{soc.value_type|lowercase}}"><i class="fa fa-{{soc.value_type|lowercase}}"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right-content-show">
+        <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect md-dynamic-height>
+            <md-tab label="DELIVERY AREAS">
+                <div class="demo-tab tab{{$index%4}}">
+                    <div class="row ui-section">
+                        <div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <div class="ui-tab-container ui-tab-horizontal">
+                                        <uib-tabset justified="false" class="ui-tab">
+                                            <uib-tab heading="Most Suitable">
+                                                <div tasty-table bind-resource="resourceMost">
+                                                    <table class="table table-bordered table-striped table-responsive">
+                                                        <thead tasty-thead bind-not-sort-by="notSortBy"></thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="row in rows">
+                                                                <td>{{ row.composite_name }}</td>
+                                                                <td>{{ row.area_name }}</td>
+                                                                <td>{{ row.id }}</td>
+                                                                <td>{{ row.postcode }}</td>
+                                                                <td>{{ row.total_households }}</td>
+                                                            </tr>
+                                                            <tr ng-show="rows.length == 0">
+                                                                <td colspan="8" class="noRecord">No Records Found</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div ng-show="rows.length != 0" tasty-pagination bind-items-per-page="itemsPerPage" bind-list-items-per-page="listItemsPerPage"></div>
+                                                </div>
+                                            </uib-tab>
+                                            <uib-tab heading="Moderately Suitable">
+                                                <div tasty-table bind-resource="resourceModerate">
+                                                    <table class="table table-bordered table-striped table-responsive">
+                                                        <thead tasty-thead bind-not-sort-by="notSortBy"></thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="row in rows">
+                                                                <td>{{ row.composite_name }}</td>
+                                                                <td>{{ row.area_name }}</td>
+                                                                <td>{{ row.id }}</td>
+                                                                <td>{{ row.postcode }}</td>
+                                                                <td>{{ row.total_households }}</td>
+                                                            </tr>
+                                                            <tr ng-show="rows.length == 0">
+                                                                <td colspan="8" class="noRecord">No Records Found</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div ng-show="rows.length != 0" tasty-pagination bind-items-per-page="itemsPerPage" bind-list-items-per-page="listItemsPerPage"></div>
+                                                </div>
+                                            </uib-tab>
+                                            <uib-tab heading="Least Suitable">
+                                                <div tasty-table bind-resource="resourceLeast">
+                                                    <table class="table table-bordered table-striped table-responsive">
+                                                        <thead tasty-thead bind-not-sort-by="notSortBy"></thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="row in rows">
+                                                                <td>{{ row.composite_name }}</td>
+                                                                <td>{{ row.area_name }}</td>
+                                                                <td>{{ row.id }}</td>
+                                                                <td>{{ row.postcode }}</td>
+                                                                <td>{{ row.total_households }}</td>
+                                                            </tr>
+                                                            <tr ng-show="rows.length == 0">
+                                                                <td colspan="8" class="noRecord">No Records Found</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div ng-show="rows.length != 0" tasty-pagination bind-items-per-page="itemsPerPage" bind-list-items-per-page="listItemsPerPage"></div>
+                                                </div>
+                                            </uib-tab>
+                                        </uib-tabset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </md-tab>
+            <md-tab label="ACTIVITY">
+                <div class="demo-tab tab{{$index%4}} view-padding">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources" select="renderCalendar()" calendar="myCalendar" id="calendar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </md-tab>
+            <md-tab label="NOTES">
+                <div class="demo-tab tab{{$index%4}}">
+                    <div class="row ui-section">
+                        <div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <div class="panel-body">
+                                        <div class="text-right" ng-if="permissions.indexOf('add_postperson_note')!=-1">
+                                            <button class="btn btn-primary" ng-click="addEditNotes('add')"><i class="fa fa-plus"></i> Add Notes</button>
+                                        </div>
+                                        <div style="border-bottom : 1px dotted #c0c0c0;padding:1% 0"></div>
+                                        <div ng-if="flag" tasty-table bind-resource-callback="getResource" bind-filters="filterBy">
+                                            <table class="table table-bordered table-striped table-responsive" ng-show="rows.length != 0">
+                                                <thead tasty-thead bind-not-sort-by="notSortBy"></thead>
+                                                <tbody>
+                                                    <tr ng-repeat="(key,row) in rows">
+                                                        <td width="5%">{{ page+key }}</td>
+                                                        <td width="40%" ng-bind-html="row.note"></td>
+                                                        <td width="10%">{{ row.created_at | date : 'dd MMM, yyyy' }}</td>
+                                                        <td width="10%">
+                                                            <button ng-show="permissions.indexOf('delete_customer')!=-1" class="md-fab md-warn md-fab-xs md-button md-ink-ripple" ng-click="delete($event,row.id)">
+                                                                <i class="fa fa-trash-o"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div ng-show="rows.length != 0" tasty-pagination></div>
+                                            <div class="text-center" style="color:#c0c0c0" ng-if="rows.length == 0">
+                                                <h1><i class="fa fa-sticky-note"></i></h1> No notes recorded
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </md-tab>
+        </md-tabs>
+    </div>
+</div>
+<!--Add Or Edit  Notes Pop Up -->
+<script type="text/ng-template" id="addEditNote.html">
+    <div class="modal-header">
+        <h4 class="ng-binding">{{heading}}</h4>
+    </div>
+    <form name="noteForm">
+        <div class="modal-body">
+            <textarea ng-model="data.note" name="note" class="form-control" rows="7" placeholder="Please add any notes.." required ng-pattern="/^[^~`<>]*$/"></textarea>
+            <div ng-if="noteForm.note.$touched &&  noteForm.note.$error">
+                <div ng-if="noteForm.note.$error.pattern" class="error_msg">Please enter valid characters</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ui-wave class="btn btn-flat btn-default" ng-click="cancel()">CANCEL</button>
+            <button type="submit" ui-wave class="btn btn-primary pull-left btn-w-md" data-ng-disabled="noteForm.$invalid" ng-click="addNote(data)">ADD</button>
+        </div>
+    </form>
+</script>
+<!--Add Or Edit Image -->
+<script type="text/ng-template" id="changeImage.html">
+    <div data-ng-include=" 'app/customers/image_upload.html' "></div>
+</script>
+
+
+

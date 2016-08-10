@@ -1,0 +1,44 @@
+<div class="col-md-12 list-content view-content" ng-controller = "PostPeopleCtrl as list">
+    <toaster-container></toaster-container>
+    <div class="panel-body">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">Post People</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" placeholder="Search" class="form-control pull-left" ng-model="filterBy.name" style="width:50%;margin-right:5px;">
+                <md-radio-group class="ui-md-radio-group-inline" ng-model="list.status_yn" ng-click="list.getPostpeopleByStatus()">
+                    <md-radio-button value="1">Active Post People</md-radio-button>
+                    <md-radio-button value="0">Inactive Post People</md-radio-button>
+                </md-radio-group>
+            </div>
+            <div class="col-md-6 text-right">
+                <md-button ng-show="permissions.indexOf('add_post_people')!=-1" class="md-raised btn-w-lg md-accent" go-click="post-people/add/"> <i class="fa fa-plus"></i> Add Post Person</md-button>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div tasty-table bind-resource-callback="list.getResource" bind-filters="list.filterBy">
+                    <table class="table table-bordered table-striped table-responsive">
+                        <thead tasty-thead bind-not-sort-by="list.notSortBy"></thead>
+                        <tbody>
+                            <tr ng-repeat="(key,row) in rows">
+                                <td width="4%">{{ list.page+key }}</td>
+                                <td width="10%"><a  tooltip-placement="bottom" uib-tooltip="View Post Person Details" tooltip-append-to-body="true" href="#/post-people/{{row.id}}/view">{{row.title}} {{row.first_name}} {{row.last_name}}</a></td>
+                                <td width="10%">{{ row.town }}</td>
+                                <td width="10%">{{ row.telephone }}</td>
+                                <td width="10%"><a tooltip-placement="bottom" uib-tooltip="View Post Person Details" tooltip-append-to-body="true" href="#/post-people/{{row.id}}/view">{{ row.username }}</a></td>
+                                <td width="10%">{{ row.email }}</td>
+                            </tr>
+                            <tr ng-show="rows.length == 0">
+                                <td colspan="6" class="noRecord">No Records Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="rows.length != 0" tasty-pagination></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

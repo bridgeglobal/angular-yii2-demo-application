@@ -1,0 +1,469 @@
+<form name="peopleForm" class="form-validation" novalidate>
+    <input type="hidden" ng-model="postPeople.id" />
+    <div flow-init="{target: server_url+'/demoyii/upload.php',singleFile: true}" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-file-success="success( $file, $message, $flow )">
+        <div class="col-md-8 list-content view-content">
+            <section class="panel">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="section-header">{{heading}}</h2>
+                            <hr>
+                            <md-tabs md-selected="0" md-border-bottom md-autoselect md-dynamic-height>
+                                <md-tab ng-disabled="tab.disabled" label="Basic Details">
+                                    <div class="demo-tab tab{{$index%4}}">
+                                        <div class="panel-body form-wrap">
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label>Title</label>
+                                                    <select ng-model="postPeople.title" name="title" class="form-control">
+                                                        <option value="">Select</option>
+                                                        <option>Mr</option>
+                                                        <option>Mrs</option>
+                                                    </select>
+                                                    <div ng-if="peopleForm.title.$touched &&  peopleForm.title.$error">
+                                                        <div ng-if="peopleForm.title.$error.required" class="error_msg">Title is required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label>Forename<span class="red">*</span></label>
+                                                    <input ng-model="postPeople.first_name" name="firstName" required class="form-control col-sm-6">
+                                                    <div ng-if="peopleForm.firstName.$touched &&  peopleForm.firstName.$error">
+                                                        <div ng-if="peopleForm.firstName.$error.required" class="error_msg">
+                                                            Forename is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label>Surname<span class="red">*</span></label>
+                                                    <input name="lastName1" ng-model="postPeople.last_name" required class="form-control col-sm-6">
+                                                    <div ng-if="peopleForm.lastName.$touched &&  peopleForm.lastName.$error">
+                                                        <div ng-if="peopleForm.lastName.$error.required" class="error_msg">
+                                                            Surname is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <h5 style="padding-top:3%">POST PERSON DETAILS</h5>
+                                            <hr>
+                                            <label>Phone Numbers<span class="red">*</span></label>
+                                            <div data-ng-repeat="data in phoneData track by $index">
+                                                <ng-form name="phoneForm">
+                                                    <div class="row">
+                                                        <div class="col-sm-8">
+                                                            <input ng-model="data.value" name="telephone" required ng-pattern="/^[\d \+\-]{7,25}$/" class="form-control col-sm-4">
+                                                            <div ng-if="phoneForm.telephone.$error && phoneForm.telephone.$touched" role="alert">
+                                                                <div ng-if="phoneForm.telephone.$error.pattern" class="error_msg">Please enter a valid phone number</div>
+                                                                <div ng-if="phoneForm.telephone.$error.required" class="error_msg">Phone number is required</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <select ng-model="data.value_type" class="form-control">
+                                                                <option>Work</option>
+                                                                <option>Mobile</option>
+                                                                <option>Home</option>
+                                                            </select>
+                                                        </div>
+                                                        <a ng-show="phoneData.length>1" href="javascript:void(0)" class="link-color" ng-show="$last" ng-click="removeField('Phone',$index)">
+                                                            <span><i class="fa fa-times" aria-hidden="true"></i></span></a>
+                                                    </div>
+                                                    <div class="divider"></div>
+                                                </ng-form>
+                                            </div>
+                                            <a href="javascript:void(0)" ng-click="addField('Phone')">+ Add another phone number</a>
+                                            <div class="divider"></div>
+                                            <label>Email Addresses<span class="red">*</span></label>
+                                            <div data-ng-repeat="data in emailData track by $index">
+                                                <ng-form name="emailForm">
+                                                    <div class="row">
+                                                        <div class="col-sm-8">
+                                                            <input ng-model="data.value" unique-email name="email" ng-pattern="/^.+@.+\..+$/" class="form-control col-sm-6" required>
+                                                            <div ng-if="emailForm.email.$error.uniqueEmail" class="error_msg">Email address already exist</div>
+                                                            <div ng-if="emailForm.email.$error && emailForm.email.$touched" role="alert">
+                                                                <div ng-if="emailForm.email.$error.pattern" class="error_msg">Please enter a valid email</div>
+                                                                <div ng-if="emailForm.email.$error.required" class="error_msg">Email is required</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <select ng-model="data.value_type" class="form-control">
+                                                                <option>Work</option>
+                                                                <option>Home</option>
+                                                            </select>
+                                                        </div>
+                                                        <a ng-show="emailData.length>1" href="javascript:void(0)" class="link-color" ng-show="$last" ng-click="removeField('Email',$index)">
+                                                            <span><i class="fa fa-times" aria-hidden="true"></i></span></a>
+                                                    </div>
+                                                    <div class="divider"></div>
+                                                </ng-form>
+                                            </div>
+                                            <a href="javascript:void(0)" ng-click="addField('Email')">+ Add another email address</a>
+                                            <div class="divider"></div>
+                                            <label>Websites & Social Networks</label>
+                                            <div data-ng-repeat="(key,data) in webData track by $index">
+                                                <ng-form name="webForm">
+                                                    <div class="row">
+                                                        <div class="col-sm-5">
+                                                            <input ng-model="data.value" name="url" class="form-control col-sm-6" ng-pattern="/^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/">
+                                                            <div ng-if="webForm.url.$error && webForm.url.$touched" role="alert">
+                                                                <div ng-if="webForm.url.$error.pattern" class="error_msg">Please enter valid characters</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <select data-ng-model="data.url_type" name="urlType" data-ng-options="category for category in urlTypes" class="form-control" ng-change="urlTypeChange(key)">
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <select data-ng-model="data.value_type" class="form-control" data-ng-options="item for item in urlTypes[data.url_type]">
+                                                            </select>
+                                                        </div>
+                                                        <a ng-show="webData.length>1" href="javascript:void(0)" class="link-color" ng-show="$last" ng-click="removeField('Url',$index)">
+                                                            <span><i class="fa fa-times" aria-hidden="true"></i></span></a>
+                                                    </div>
+                                                    <div class="divider"></div>
+                                                </ng-form>
+                                            </div>
+                                            <a href="javascript:void(0)" ng-click="addField('Url')">+ Add another web address</a>
+                                            <div class="divider"></div>
+                                            <label>Addresses<span class="red">*</span></label>
+                                            <div data-ng-repeat="data in addressData track by $index">
+                                                <ng-form name="addressForm">
+                                                    <div class="row">
+                                                        <div class="col-sm-8">
+                                                            <input ng-model="data.street" name="street" class="form-control col-sm-6" ng-pattern="/^[a-z A-Z0-9\&\,\-\(\)\'\/]+$/" placeholder="House No, Street Name (required)" required>
+                                                            <div ng-if="addressForm.street.$error && addressForm.street.$touched" role="alert">
+                                                                <div ng-if="addressForm.street.$error.pattern" class="error_msg">Please enter valid characters</div>
+                                                                <div ng-if="addressForm.street.$error.required" class="error_msg">House No, Street Name is required</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <select ng-model="data.address_type" class="form-control" id="urlTypePrimary">
+                                                                <option>Work</option>
+                                                                <option>Postal</option>
+                                                                <option>Home</option>
+                                                            </select>
+                                                        </div>
+                                                        <a ng-show="addressData.length>1" href="javascript:void(0)" class="link-color" ng-show="$last" ng-click="removeField('Address',$index)">
+                                                            <span><i class="fa fa-times" aria-hidden="true"></i></span></a>
+                                                    </div>
+                                                    <div class="divider"></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <input ng-model="data.town" name="town" class="form-control col-sm-6" ng-pattern="/^[a-z A-Z0-9\&\,\-\(\)\'\/]+$/" placeholder="Town">
+                                                            <div ng-if="addressForm.town.$error && addressForm.town.$touched" role="alert">
+                                                                <div ng-if="addressForm.town.$error.pattern" class="error_msg">Please enter valid characters</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <input ng-model="data.city" name="city" ng-pattern="/^[a-z A-Z0-9\&\,\-\(\)\'\/]+$/" class="form-control col-sm-4" placeholder="City">
+                                                            <div ng-if="addressForm.city.$error && addressForm.city.$touched" role="alert">
+                                                                <div ng-if="addressForm.city.$error.pattern" class="error_msg">Please enter valid characters</div>
+                                                            </div>
+                                                        </div>
+                                                        <!--<div class="col-sm-3">
+                                                        <input ng-model="data.country" name="country" ng-pattern="/^[a-z A-Z0-9\&\,\-\(\)\'\/]+$/" class="form-control col-sm-4" placeholder="Country">
+                                                        <div ng-if="customerForm.country.$error && customerForm.country.$touched" role="alert">
+                                                            <div ng-if="addressForm.country.$error.pattern" class="error_msg">Please enter valid characters</div>
+                                                        </div>
+                                                    </div>-->
+                                                        <div class="col-sm-3">
+                                                            <input name="postcode" ng-model="data.postcode" ng-pattern="/^[\d A-Z]{5,15}$/" class="form-control col-sm-4" placeholder="Postcode (required)" required>
+                                                            <div ng-if="addressForm.postcode.$error && addressForm.postcode.$touched" role="alert">
+                                                                <div ng-if="addressForm.postcode.$error.pattern" class="error_msg">Please enter a valid postcode</div>
+                                                                <div ng-if="addressForm.postcode.$error.required" class="error_msg">postcode code is required</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="divider"></div>
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <input name="postcode" ng-model="data.postcode" ng-pattern="/^[\d A-Z]{5,15}$/" class="form-control col-sm-4" placeholder="'Postcode'" required>
+                                                        <div ng-if="addressForm.postcode.$error && addressForm.postcode.$touched" role="alert">
+                                                            <div ng-if="addressForm.postcode.$error.pattern" class="error_msg">Please enter a valid postcode</div>
+                                                            <div ng-if="addressForm.postcode.$error.required" class="error_msg">postcode code is required</div>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
+                                                    <div class="divider"></div>
+                                                </ng-form>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <a href="javascript:void(0)" ng-click="addField('Address')">+ Add another address</a>
+                                            <div class="divider"></div>
+                                            <h5 style="padding-top:3%">OTHER INFO</h5>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <label>Deliverer Location</label>
+                                                    <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in querySearch(searchText)" md-item-text="item.display" md-min-length="0" placeholder="Enter Deliverer Location" md-selected-item-change="selectedItemChange(item.value)">
+                                                        <md-item-template>
+                                                            <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
+                                                        </md-item-template>
+                                                        <md-not-found>No matching locations were found</md-not-found>
+                                                    </md-autocomplete>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label>Drop Off Location</label>
+                                                    <select ng-model="postPeople.drop_off_location" name="dropLocation" class="form-control">
+                                                        <option value="">Select</option>
+                                                        <option>Garage</option>
+                                                        <option>Shed</option>
+                                                        <option>neighbour </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label>Payment Method</label>
+                                                    <select class="form-control col-sm-6" ng-model="postPeople.payment_method">
+                                                        <option value="1">Transfer</option>
+                                                        <option value="2">Cash</option>
+                                                        <option value="3">Other</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label>Do You Drive</label>
+                                                    <br/>
+                                                    <md-radio-group class="ui-md-radio-group-inline" ng-model="postPeople.driver_yn">
+                                                        <md-radio-button value="1">Yes</md-radio-button>
+                                                        <md-radio-button value="0">No</md-radio-button>
+                                                    </md-radio-group>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label>Are They GPS Tracked?</label>
+                                                    <br/>
+                                                    <md-radio-group class="ui-md-radio-group-inline" ng-model="postPeople.gps_yn">
+                                                        <md-radio-button value="1">Yes</md-radio-button>
+                                                        <md-radio-button value="0">No</md-radio-button>
+                                                    </md-radio-group>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label>Deliverer Rating</label>
+                                                    <br/>
+                                                    <uib-rating class="ui-rating size-h2 ui-rating-warning" ng-model="postPeople.rating" max="5" readonly="true" state-on="'fa fa-star'" state-off="'fa fa-star-o'">
+                                                    </uib-rating>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label>Pay Bonus / Thousand </label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">£</span>
+                                                        <input type="text" class="form-control" ng-model="postPeople.pay_bonus" name="pay_bonus" ng-pattern="/^[0-9]+(.[0-9]{1,2})?$/">
+                                                    </div>
+                                                    <div ng-if="peopleForm.pay_bonus.$touched &&  peopleForm.pay_bonus.$error">
+                                                        <div ng-if="peopleForm.pay_bonus.$error.required" class="error_msg">Please enter pay bonus</div>
+                                                        <div ng-if="peopleForm.pay_bonus.$error.pattern" class="error_msg">Please enter valid pay bonus</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                        </div>
+                                    </div>
+                                </md-tab>
+                                <md-tab label="Profile Details">
+                                    <div class="demo-tab tab{{$index%4}}">
+                                        <div class="panel-body form-wrap">
+                                            <div class="row">
+                                                <div class="col-md-5 text-center">
+                                                    <div class="col-md-12">
+                                                        <label>Profile Image</label>
+                                                        <br/>
+                                                        <md-radio-group class="ui-md-radio-group-inline" ng-model="postPeople.image_type">
+                                                            <md-radio-button value="img">Upload Image</md-radio-button>
+                                                            <md-radio-button value="url">Link</md-radio-button>
+                                                        </md-radio-group>
+                                                    </div>
+                                                    <div class="col-md-12" ng-if="postPeople.image_type=='img'">
+                                                        <header class="profile-header" style="margin:10%">
+                                                            <div class="profile-img">
+                                                                <img ng-if="!$flow.files[0] && (postPeople.link) && postPeople.image_type == 'img'" ng-src="{{server_url}}/d2dserver/images/users/{{postPeople.link}}" class="img-circle" height="250" width="250" />
+                                                                <img ng-if="!$flow.files[0] && (postPeople.link) && postPeople.image_type == 'url'" ng-src="{{postPeople.link}}" class="img-circle" height="250" width="250" />
+                                                                <img flow-img="$flow.files[0]" ng-if="$flow.files[0]" class="img-circle" height="250" width="250" />
+                                                                <img alt="" src="images/no-image.jpg" ng-if="!$flow.files[0] && (postPeople.link == '' || postPeople.link === null)" class="img-circle" height="250" width="250">
+                                                            </div>
+                                                            <div class="fileUpload btn btn-primary" ng-show="postPeople.image_type=='img'">
+                                                                <span>Browse Image</span>
+                                                                <input type="file" class="upload" flow-btn/>
+                                                            </div>
+                                                        </header>
+                                                    </div>
+                                                    <div class="col-md-12" ng-if="postPeople.image_type=='url'">
+                                                        <br>
+                                                        <input type="text" name="url" ng-model="image.urlField" class="form-control col-sm-6" placeholder="Enter image Url" ng-pattern="/^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/" />
+                                                        <div ng-if="peopleForm.url.$error && peopleForm.url.$touched" role="alert">
+                                                            <div ng-if="peopleForm.url.$error.pattern" class="error_msg">Please enter a valid URL</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7" ng-if="action=='edit'">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label>Status</label>
+                                                            <br/>
+                                                            <md-radio-group class="ui-md-radio-group-inline" ng-model="postPeople.status_yn">
+                                                                <md-radio-button value="1">Active</md-radio-button>
+                                                                <md-radio-button value="0">Inactive</md-radio-button>
+                                                            </md-radio-group>
+                                                        </div>
+                                                    </div>
+                                                    <div class="divider"></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label>Username (Disabled)</label>
+                                                            <input ng-model="postPeople.username" disabled class="form-control col-sm-6">
+                                                        </div>
+                                                    </div>
+                                                    <div class="divider"></div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label id="passLabel">Password (Disabled)</label>
+                                                            <input id="password" ng-model="postPeople.password" type="password" disabled class="form-control col-sm-6">
+                                                        </div>
+                                                    </div>
+                                                    <div class="divider"></div>
+                                                    <div class="row text-right">
+                                                        <div class="col-sm-12">
+                                                            <button type="button" class="btn btn-primary btn-xs" ng-if="action=='edit'" ng-click="resetPassword()" ui-wave>Reset Password</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </md-tab>
+                                <md-tab ng-disabled="tab.disabled" label="Delivery Areas">
+                                    <div class="demo-tab tab{{$index%4}}">
+                                        <div class="panel-body form-wrap">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <input type="text" aria-label="Search" placeholder="Search" class="form-control pull-left" ng-model="filterBy.name">
+                                                </div>
+                                                <div class="col-md-4" ng-show="permissions.indexOf('view_customer')!=-1">
+                                                    <button ng-click="selectAreas()" class="md-raised btn-w-md md-button md-ink-ripple"><i class="zmdi zmdi-plus-circle-o"></i> ADD ZONES</button>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="ui-tab-container ui-tab-horizontal">
+                                                        <uib-tabset justified="false" class="ui-tab">
+                                                            <uib-tab heading="Most Suitable" select="changeAreaType(0)">
+                                                                <div tasty-table bind-resource="resourceMost">
+                                                                    <table class="table table-bordered table-striped table-responsive">
+                                                                        <thead tasty-thead bind-not-sort-by="notSortBy"></thead>
+                                                                        <tbody>
+                                                                            <tr ng-repeat="row in rows track by $index">
+                                                                                <td>{{ row.composite_name }}</td>
+                                                                                <td>{{ row.area_name }}</td>
+                                                                                <td>{{ row.id }}</td>
+                                                                                <td>{{ row.postcode }}</td>
+                                                                                <td>{{ row.total_households }}</td>
+                                                                                <td>
+                                                                                    <button ng-click="removeArea(row)" ng-show="permissions.indexOf('add_customer')!=-1" class="md-fab md-warn md-fab-xs md-button md-ink-ripple" tooltip-placement="bottom" uib-tooltip="Remove Area" tooltip-append-to-body="true">
+                                                                                        <i class="fa fa-trash"></i>
+                                                                                    </button>&nbsp;
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr ng-show="rows.length == 0">
+                                                                                <td colspan="8" class="noRecord">No Records Found</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div tasty-pagination bind-items-per-page="itemsPerPage" bind-list-items-per-page="listItemsPerPage"></div>
+                                                                </div>
+                                                            </uib-tab>
+                                                            <uib-tab heading="Moderately Suitable" select="changeAreaType(1)">
+                                                                <div tasty-table bind-resource="resourceModerate">
+                                                                    <table class="table table-bordered table-striped table-responsive">
+                                                                        <thead tasty-thead bind-not-sort-by="notSortBy"></thead>
+                                                                        <tbody>
+                                                                            <tr ng-repeat="row in rows track by $index">
+                                                                                <td>{{ row.composite_name }}</td>
+                                                                                <td>{{ row.area_name }}</td>
+                                                                                <td>{{ row.id }}</td>
+                                                                                <td>{{ row.postcode }}</td>
+                                                                                <td>{{ row.total_households }}</td>
+                                                                                <td>
+                                                                                    <button ng-click="removeArea(row)" ng-show="permissions.indexOf('add_customer')!=-1" class="md-fab md-warn md-fab-xs md-button md-ink-ripple" tooltip-placement="bottom" uib-tooltip="Remove Area" tooltip-append-to-body="true">
+                                                                                        <i class="fa fa-trash"></i>
+                                                                                    </button>&nbsp;
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr ng-show="rows.length == 0">
+                                                                                <td colspan="8" class="noRecord">No Records Found</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div tasty-pagination bind-items-per-page="itemsPerPage" bind-list-items-per-page="listItemsPerPage"></div>
+                                                                </div>
+                                                            </uib-tab>
+                                                            <uib-tab heading="Least Suitable" select="changeAreaType(2)">
+                                                                <div tasty-table bind-resource="resourceLeast">
+                                                                    <table class="table table-bordered table-striped table-responsive">
+                                                                        <thead tasty-thead bind-not-sort-by="notSortBy"></thead>
+                                                                        <tbody>
+                                                                            <tr ng-repeat="row in rows track by $index">
+                                                                                <td>{{ row.composite_name }}</td>
+                                                                                <td>{{ row.area_name }}</td>
+                                                                                <td>{{ row.id }}</td>
+                                                                                <td>{{ row.postcode }}</td>
+                                                                                <td>{{ row.total_households }}</td>
+                                                                                <td>
+                                                                                    <button ng-click="removeArea(row)" ng-show="permissions.indexOf('add_customer')!=-1" class="md-fab md-warn md-fab-xs md-button md-ink-ripple" tooltip-placement="bottom" uib-tooltip="Remove Area" tooltip-append-to-body="true">
+                                                                                        <i class="fa fa-trash"></i>
+                                                                                    </button>&nbsp;
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr ng-show="rows.length == 0">
+                                                                                <td colspan="8" class="noRecord">No Records Found</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div tasty-pagination bind-items-per-page="itemsPerPage" bind-list-items-per-page="listItemsPerPage"></div>
+                                                                </div>
+                                                            </uib-tab>
+                                                        </uib-tabset>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </md-tab>
+                                <md-tab ng-disabled="tab.disabled" label="Activity">
+                                    <div class="demo-tab tab{{$index%4}}" style="padding: 25px; text-align: center;">
+                                        <div class="panel-body form-wrap">
+                                            <md-input-container class="md-block" id="con">
+                                                <button class="btn btn-info btn-w-md ui-wave pull-left" type="button" data-ng-click="addEvent()" ng-show="applyHoliday">Add As Holiday</button>
+                                            </md-input-container>
+                                            <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources" calendar="myCalendar"></div>
+                                        </div>
+                                    </div>
+                                </md-tab>
+                            </md-tabs>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer fixed-footer">
+                    <a href="#/post-people" class="btn btn-flat btn-default pull-right">CANCEL</a>
+                    <button id="saveBtn" type="submit" ui-wave class="btn btn-primary btn-w-md pull-left" data-ng-disabled="peopleForm.$invalid" ng-click="savePostPeople($flow)">SAVE
+                    </button>
+                </div>
+            </section>
+        </div>
+    </div>
+</form>
+<script type="text/ng-template" id="postPeopleArea.html">
+    <div data-ng-include="'app/post-people/areas.html'"></div>
+</script>
+<style type="text/css">
+.modal-dialog {
+    width: 90%;
+}
+</style>
